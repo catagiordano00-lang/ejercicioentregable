@@ -1,0 +1,19 @@
+# Visual Studio
+.vs/
+.vscode/
+
+# .NET
+bin/
+obj/
+
+# Archivos de usuario
+*.user
+*.suo
+
+# Bases de datos SQLite
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
