@@ -8,6 +8,6 @@ namespace AccesoDatos.Models
     {
         public int Id { get; set; }
         public string Nombre { get; set; }
-        public ICollection<Libro> Libros { get; set; } = new List<Libro>();
+        public List<Libro> Libros { get; set; } = new();
     }
 }
