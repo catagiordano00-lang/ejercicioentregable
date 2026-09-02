@@ -23,5 +23,16 @@ namespace AccesoDatos.Repositores
         {
             return _context.Set<T>().ToList();
         }
+        public void Modificar(T entity)
+        {
+            _context.Set<T>().Update(entity);
+            _context.SaveChanges();
+        }
+
+        public void Eliminar(T entity)
+        {
+            _context.Set<T>().Remove(entity);
+            _context.SaveChanges();
+        }
     }
 }

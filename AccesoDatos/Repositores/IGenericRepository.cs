@@ -8,7 +8,12 @@ namespace AccesoDatos.Repositores
 
     {
         void Add(T entity);
+
         List<T> GetAll();
-        
+
+        void Modificar(T entity);
+
+        void Eliminar(T entity);
+
     }
 }
