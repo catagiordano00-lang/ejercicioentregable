@@ -1,5 +1,5 @@
 ﻿using AccesoDatos.Models;
-using AccesoDatos.Repositories;
+using AccesoDatos.Repositores;
 
 IGenericRepository<Autor> autorRepository = new GenericRepository<Autor>();
 IGenericRepository<Libro> libroRepository = new GenericRepository<Libro>();
@@ -62,7 +62,8 @@ while (continuar)
             break;
     }
 }
-    void AltaAutor()
+
+void AltaAutor()
 {
     Console.Write("Nombre del autor: ");
 
@@ -133,7 +134,8 @@ void MostrarLibros()
     {
         foreach (var libro in libros)
         {
-            Console.WriteLine($"ID: {libro.Id} | Título: {libro.Titulo} | Año: {libro.AnioPublicacion} " +
+            Console.WriteLine(
+                $"ID: {libro.Id} | Título: {libro.Titulo} | Año: {libro.AnioPublicacion} " +
                 $"| Autor: {libro.Autor.Nombre}");
         }
     }
@@ -142,110 +144,121 @@ void MostrarLibros()
 
     PresioneParaContinuar();
 }
-    void ModificarAutor()
+
+void ModificarAutor()
+{
+    Console.WriteLine("===== MODIFICAR AUTOR =====");
+
+    Console.Write("Ingrese el ID del autor: ");
+    int id = int.Parse(Console.ReadLine());
+
+    var autores = autorRepository.ObtenerTodos();
+
+    var autor = autores.FirstOrDefault(a => a.Id == id);
+
+    if (autor == null)
     {
-        Console.Write("Ingrese el ID del autor que desea modificar: ");
-        int id = int.Parse(Console.ReadLine());
-
-        var autores = autorRepository.ObtenerTodos();
-
-        var autor = autores.FirstOrDefault(a => a.Id == id);
-
-        if (autor == null)
-        {
-            Console.WriteLine("No existe un autor con ese ID.");
-            PresioneParaContinuar();
-            return;
-        }
-
-        Console.WriteLine($"Nombre actual: {autor.Nombre}");
-
-        Console.Write("Ingrese el nuevo nombre: ");
-        string nuevoNombre = Console.ReadLine();
-
-        autor.Nombre = nuevoNombre;
-
-        autorRepository.Modificar(autor);
-
-        Console.WriteLine("Autor modificado correctamente.");
-
+        Console.WriteLine("No existe un autor con ese ID.");
         PresioneParaContinuar();
+        return;
     }
-    void ModificarLibro()
+
+    Console.WriteLine($"Nombre actual: {autor.Nombre}");
+
+    Console.Write("Ingrese el nuevo nombre: ");
+    string nuevoNombre = Console.ReadLine();
+
+    autor.Nombre = nuevoNombre;
+
+    autorRepository.Modificar(autor);
+
+    Console.WriteLine("Autor modificado correctamente.");
+
+    PresioneParaContinuar();
+}
+
+void ModificarLibro()
+{
+    Console.WriteLine("===== MODIFICAR LIBRO =====");
+
+    Console.Write("Ingrese el ID del libro: ");
+    int id = int.Parse(Console.ReadLine());
+
+    var libros = libroRepository.ObtenerTodosCon("Autor");
+
+    var libro = libros.FirstOrDefault(l => l.Id == id);
+
+    if (libro == null)
     {
-        Console.Write("Ingrese el ID del libro que desea modificar: ");
-        int id = int.Parse(Console.ReadLine());
-
-        var libros = libroRepository.ObtenerTodosCon("Autor");
-
-        var libro = libros.FirstOrDefault(l => l.Id == id);
-
-        if (libro == null)
-        {
-            Console.WriteLine("No existe un libro con ese ID.");
-            PresioneParaContinuar();
-            return;
-        }
-
-        Console.WriteLine($"Título actual: {libro.Titulo}");
-        Console.WriteLine($"Año de publicación: {libro.AnioPublicacion}");
-        Console.WriteLine($"Autor: {libro.Autor.Nombre}");
-
-        Console.WriteLine();
-
-        Console.Write("Ingrese el nuevo título: ");
-        string nuevoTitulo = Console.ReadLine();
-
-        libro.Titulo = nuevoTitulo;
-
-        libroRepository.Modificar(libro);
-
-        Console.WriteLine("Libro modificado correctamente.");
-
+        Console.WriteLine("No existe un libro con ese ID.");
         PresioneParaContinuar();
+        return;
     }
-    void EliminarLibro()
+
+    Console.WriteLine($"Título actual: {libro.Titulo}");
+    Console.WriteLine($"Año de publicación: {libro.AnioPublicacion}");
+    Console.WriteLine($"Autor: {libro.Autor.Nombre}");
+
+    Console.WriteLine();
+
+    Console.Write("Ingrese el nuevo título: ");
+    string nuevoTitulo = Console.ReadLine();
+
+    libro.Titulo = nuevoTitulo;
+
+    libroRepository.Modificar(libro);
+
+    Console.WriteLine("Libro modificado correctamente.");
+
+    PresioneParaContinuar();
+}
+
+void EliminarLibro()
+{
+    Console.WriteLine("===== ELIMINAR LIBRO =====");
+
+    Console.Write("Ingrese el ID del libro: ");
+    int id = int.Parse(Console.ReadLine());
+
+    var libros = libroRepository.ObtenerTodosCon("Autor");
+
+    var libro = libros.FirstOrDefault(l => l.Id == id);
+
+    if (libro == null)
     {
-        Console.Write("Ingrese el ID del libro que desea eliminar: ");
-        int id = int.Parse(Console.ReadLine());
-
-        var libros = libroRepository.ObtenerTodosCon("Autor");
-
-        var libro = libros.FirstOrDefault(l => l.Id == id);
-
-        if (libro == null)
-        {
-            Console.WriteLine("No existe un libro con ese ID.");
-            PresioneParaContinuar();
-            return;
-        }
-
-        Console.WriteLine($"Libro: {libro.Titulo}");
-        Console.WriteLine($"Año: {libro.AnioPublicacion}");
-        Console.WriteLine($"Autor: {libro.Autor.Nombre}");
-
-        Console.WriteLine();
-
-        Console.Write("¿Está seguro que desea eliminarlo? (S/N): ");
-        string respuesta = Console.ReadLine();
-
-        if (respuesta.ToUpper() == "S")
-        {
-            libroRepository.Eliminar(libro);
-
-            Console.WriteLine("Libro eliminado correctamente.");
-        }
-        else
-        {
-            Console.WriteLine("Operación cancelada.");
-        }
-
+        Console.WriteLine("No existe un libro con ese ID.");
         PresioneParaContinuar();
+        return;
     }
-    void PresioneParaContinuar()
+
+    Console.WriteLine($"Título: {libro.Titulo}");
+    Console.WriteLine($"Año de publicación: {libro.AnioPublicacion}");
+    Console.WriteLine($"Autor: {libro.Autor.Nombre}");
+
+    Console.WriteLine();
+
+    Console.Write("¿Está seguro que desea eliminar este libro? (S/N): ");
+    string respuesta = Console.ReadLine();
+
+    if (respuesta.ToUpper() == "S")
+    {
+        libroRepository.Eliminar(libro);
+
+        Console.WriteLine("Libro eliminado correctamente.");
+    }
+    else
+    {
+        Console.WriteLine("Operación cancelada.");
+    }
+
+    PresioneParaContinuar();
+}
+
+void PresioneParaContinuar()
 {
     Console.WriteLine();
     Console.WriteLine("Presione una tecla para continuar...");
     Console.ReadKey();
     Console.Clear();
 }
+

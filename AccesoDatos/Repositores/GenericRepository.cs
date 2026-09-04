@@ -6,32 +6,47 @@ using System.Linq;
 
 namespace AccesoDatos.Repositores
 {
-    internal class GenericRepository<T> : IGenericRepository<T> where T : class 
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly AplicationDbContext _context;
-        public GenericRepository(DbContextOptions<AplicationDbContext> options)
+
+        public GenericRepository()
         {
-            _context = new AplicationDbContext(options);
+            _context = new AplicationDbContext();
+
             _context.Database.EnsureCreated();
         }
-        public void Add(T entity)
+
+        public void Agregar(T entity)
         {
             _context.Set<T>().Add(entity);
+
             _context.SaveChanges();
         }
-        public List<T> GetAll()
+
+        public List<T> ObtenerTodos()
         {
             return _context.Set<T>().ToList();
         }
+
+        public List<T> ObtenerTodosCon(string propiedad)
+        {
+            return _context.Set<T>()
+                .Include(propiedad)
+                .ToList();
+        }
+
         public void Modificar(T entity)
         {
             _context.Set<T>().Update(entity);
+
             _context.SaveChanges();
         }
 
         public void Eliminar(T entity)
         {
             _context.Set<T>().Remove(entity);
+
             _context.SaveChanges();
         }
     }

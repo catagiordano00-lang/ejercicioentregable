@@ -4,16 +4,16 @@ using System.Text;
 
 namespace AccesoDatos.Repositores
 {
-    internal interface IGenericRepository <T> where T : class
-
+    public interface IGenericRepository<T> where T : class
     {
-        void Add(T entity);
+        void Agregar(T entity);
 
-        List<T> GetAll();
+        List<T> ObtenerTodos();
+
+        List<T> ObtenerTodosCon(string propiedad);
 
         void Modificar(T entity);
 
         void Eliminar(T entity);
-
     }
 }
